@@ -3,11 +3,11 @@ using UnityEngine;
 public class ScrollBGShader : MonoBehaviour
 {
     [SerializeField] float speed;
-    Renderer renderer;
+    Renderer render;
 
     void Start()
     {
-        renderer = GetComponent<Renderer>();    
+        render = GetComponent<Renderer>();    
     }
 
     void Update()
@@ -15,6 +15,6 @@ public class ScrollBGShader : MonoBehaviour
         // desplazammiento del fondo
         Vector2 offset = speed * Time.deltaTime * Vector2.up;
         
-        renderer.material.mainTextureOffset += offset;
+        render.material.mainTextureOffset += offset;
     }
 }
