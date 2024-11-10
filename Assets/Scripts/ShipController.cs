@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
+    const float SHOOT_OFFSET = 0.5f;
+
+    [Header("References")]
+    [SerializeField] GameObject shoot;
+
     [Header("Settings")]
     [SerializeField] Vector3 endPosition;
     [SerializeField] float duration;
@@ -18,6 +23,21 @@ public class ShipController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();    
 
         StartCoroutine(StarPlayer());
+    }
+
+    void Update()
+    {
+        // if (active && Input.GetKeyDown(KeyCode.Space))
+        // Fire1 es el botón izquierdo del ratón, Left CTRL y Joystick Button 0
+        if (active && Input.GetButtonDown("Fire1")) 
+        {
+            // obtenemos la posición de la nave
+            Vector3 position = transform.position;
+            // establecemos la posición del disparo
+            Vector3 shootPosition = new Vector3(position.x, position.y + SHOOT_OFFSET, position.z);
+            // instanciamos el disparo
+            Instantiate(shoot, shootPosition, Quaternion.identity);
+        }
     }
 
     void FixedUpdate()
