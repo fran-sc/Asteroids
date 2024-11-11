@@ -6,6 +6,9 @@ public class ShootController : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float temp;
 
+    [Header("References")]
+    [SerializeField] GameObject hitExplosion;
+
     void Update()
     {
         // actualizar mi temporizador        
@@ -14,5 +17,17 @@ public class ShootController : MonoBehaviour
         
         // actiualizar la posición
         transform.Translate(Vector3.up * speed * Time.deltaTime);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            // instanciar la explosión
+            Instantiate(hitExplosion, transform.position, Quaternion.identity);
+
+            // destruir el disparo
+            Destroy(gameObject);
+        }
     }
 }

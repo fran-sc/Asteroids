@@ -59,6 +59,14 @@ public class ShipController : MonoBehaviour
         rb.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("[Player] - Colisión");
+        }
+    }
+
     IEnumerator StarPlayer()
     {
         // desactivamos las colisiones para la nave
