@@ -20,16 +20,20 @@ public class EnemyController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Instantiate(explosion, transform.position, Quaternion.identity);
-        
-        Destroy(gameObject);
+        DestroyEnemy();
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("[Enemy] - Colisión");
-        }
+        DestroyEnemy();
+    }
+
+    void DestroyEnemy()
+    {
+        // instanciamos la animación de la explosión
+        Instantiate(explosion, transform.position, Quaternion.identity);
+        
+        // destruimos la nave
+        Destroy(gameObject);
     }
 }

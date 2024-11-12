@@ -15,19 +15,16 @@ public class ShootController : MonoBehaviour
         temp -= Time.deltaTime;
         if (temp < 0) Destroy(gameObject);
         
-        // actiualizar la posición
+        // actualizar la posición
         transform.Translate(Vector3.up * speed * Time.deltaTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            // instanciar la explosión
-            Instantiate(hitExplosion, transform.position, Quaternion.identity);
+        // instanciar la explosión
+        Instantiate(hitExplosion, transform.position, Quaternion.identity);
 
-            // destruir el disparo
-            Destroy(gameObject);
-        }
+        // destruir el disparo
+        Destroy(gameObject);
     }
 }

@@ -7,6 +7,7 @@ public class ShipController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] GameObject shoot;
+    [SerializeField] GameObject explosion;
 
     [Header("Settings")]
     [SerializeField] Vector3 endPosition;
@@ -17,9 +18,12 @@ public class ShipController : MonoBehaviour
     Rigidbody2D rb;
     Vector2 direction;
     bool active;
+    Vector3 posicionInicial;
 
     void Start()
     {
+        posicionInicial = transform.position;
+
         rb = GetComponent<Rigidbody2D>();    
 
         StartCoroutine(StarPlayer());
@@ -61,10 +65,30 @@ public class ShipController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        string tag = other.gameObject.tag;
+        if (tag == "Enemy" || tag == "AsteroidBig" || tag == "AsteroidSmall")
         {
-            Debug.Log("[Player] - Colisión");
+            DestroyShip();
         }
+    }
+
+    void DestroyShip()
+    {
+        active = false;
+
+        // instanciamos la animación de la explosión
+        Instantiate(explosion, transform.position, Quaternion.identity);
+        
+        // instanciamos una nueva nave
+        Instantiate(gameObject, posicionInicial, Quaternion.identity);
+
+        // destruimos la nave actual
+        Destroy(gameObject);
+
+        // reiniciamos la nave
+        //rb.linearVelocity = Vector2.zero;
+        //transform.position = posicionInicial;
+        //StartCoroutine(StarPlayer());
     }
 
     IEnumerator StarPlayer()

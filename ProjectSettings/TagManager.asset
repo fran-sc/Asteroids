@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Shoot
   - Enemy
+  - AsteroidBig
+  - AsteroidSmall
   layers:
   - Default
   - TransparentFX
@@ -14,9 +16,9 @@ TagManager:
   - Water
   - UI
   - Enemies
-  - Limits
-  - 
-  - 
+  - LimitsH
+  - Asteroids
+  - LimitsV
   - 
   - 
   - 
