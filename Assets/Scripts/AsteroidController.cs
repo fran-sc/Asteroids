@@ -59,6 +59,9 @@ public class AsteroidController : MonoBehaviour
 
     void DestroyAsteroid()
     {
+        // incrementamos la puntuación del jugador
+        GameManager.GetInstance().AddScore(gameObject.tag);
+
         // instanciamos la animación de la explosión
         Instantiate(explosion, transform.position, Quaternion.identity);
         

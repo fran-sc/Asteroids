@@ -78,9 +78,16 @@ public class ShipController : MonoBehaviour
 
         // instanciamos la animación de la explosión
         Instantiate(explosion, transform.position, Quaternion.identity);
+
+        // actualizamos las vidas del jugador
+        GameManager gm = GameManager.GetInstance();
+        gm.LoseLife();
         
         // instanciamos una nueva nave
-        Instantiate(gameObject, posicionInicial, Quaternion.identity);
+        if (!gm.IsGameOver())
+        {
+            Instantiate(gameObject, posicionInicial, Quaternion.identity);
+        }
 
         // destruimos la nave actual
         Destroy(gameObject);
