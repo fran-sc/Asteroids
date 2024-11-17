@@ -1,6 +1,3 @@
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,6 +9,7 @@ public class GameManager : MonoBehaviour
     const int SCORE_ENEMY = 50;
     const int SCORE_ASTEROID_BIG = 10;
     const int SCORE_ASTEROID_SMALL = 25;
+    const string DATA_FILE = "data.json";
 
     [Header("GUI")]
     [SerializeField] Text txtScore;
@@ -26,11 +24,11 @@ public class GameManager : MonoBehaviour
     static GameManager instance;
 
     int score;
-    int hscore;
     int lives = LIVES;
     bool extra;
     bool gameOver;
     bool paused;
+    GameData gameData;
 
     public bool IsGameOver()
     {
@@ -60,6 +58,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        gameData = LoadData();
+    }
+
+    private GameData LoadData()
+    {
+        if (System.IO.File.Exists(DATA_FILE))
+        {
+            string fileText = System.IO.File.ReadAllText(DATA_FILE);
+
+            return JsonUtility.FromJson<GameData>(fileText);
+        }
+
+        return new GameData();
+    }
+
+    void SaveData()
+    {
+        // creamos la repressentaicón en JSON de los datos del juego
+        string json = JsonUtility.ToJson(gameData);
+
+        // volcar los datos en el archivo
+        System.IO.File.WriteAllText(DATA_FILE, json);
+    }
+
     public void AddScore(string tag)
     {
         int pts = 0;
@@ -84,6 +108,12 @@ public class GameManager : MonoBehaviour
         if (!extra && score >= EXTRA_LIFE)
         {
             ExtraLife();
+        }
+
+        // comprobar si la puntuación actual supera la máxima
+        if (score > gameData.hscore)
+        {
+            gameData.hscore = score;
         }
     }
 
@@ -110,11 +140,17 @@ public class GameManager : MonoBehaviour
     {
         gameOver = true;
 
+        // restauramos la escala de tiempo
         Time.timeScale = 1;
 
+        // reproducimos el audio de game over
         AudioSource.PlayClipAtPoint(sfxGameOver, Camera.main.transform.position, 1);
 
+        // establecemos el mensaje de game over
         txtMessage.text = "GAME OVER\nPRESS <RET> TO RESTART";
+
+        // guardamos los datos del juego
+        SaveData();
     }
 
     void OnGUI()
@@ -130,8 +166,8 @@ public class GameManager : MonoBehaviour
         txtScore.text = $"{score:D4}";
 
         // mostrar la puntuación máxima
-        //txtHScore.text = string.Format("{0,4:D4}", hscore);
-        txtHScore.text = $"{hscore:D4}";
+        //txtHScore.text = string.Format("{0,4:D4}", gameData.hscore);
+        txtHScore.text = $"{gameData.hscore:D4}";
     }
 
     void Update()
@@ -198,7 +234,5 @@ public class GameManager : MonoBehaviour
 
         // reanudamos el juego
         Time.timeScale = 1;
-    }
-
-    
+    }    
 }
