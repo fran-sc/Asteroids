@@ -30,10 +30,16 @@ public class GameManager : MonoBehaviour
     int lives = LIVES;
     bool extra;
     bool gameOver;
+    bool paused;
 
     public bool IsGameOver()
     {
         return gameOver;
+    }
+
+    public bool IsPaused()
+    {
+        return paused;
     }
 
     public static GameManager GetInstance()
@@ -104,6 +110,8 @@ public class GameManager : MonoBehaviour
     {
         gameOver = true;
 
+        Time.timeScale = 1;
+
         AudioSource.PlayClipAtPoint(sfxGameOver, Camera.main.transform.position, 1);
 
         txtMessage.text = "GAME OVER\nPRESS <RET> TO RESTART";
@@ -128,9 +136,69 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (gameOver && Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+        else if (!gameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                if (paused)
+                {
+                    ResumeGame();
+                }
+                else
+                {
+                    PauseGame();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.F1))
+            {
+                Time.timeScale /= 1.25f;
+            }
+            else if (Input.GetKeyDown(KeyCode.F2))
+            {
+                Time.timeScale *= 1.25f;
+            }
+            else if (Input.GetKeyDown(KeyCode.F3))
+            {
+                Time.timeScale = 1;
+            }
+        } 
+        else if (gameOver && Input.GetKeyDown(KeyCode.Return))
         {
             SceneManager.LoadScene(0);
         }
     }
+
+    private void PauseGame()
+    {
+        paused = true;
+
+        // detenemos la música de fondo
+        Camera.main.GetComponent<AudioSource>().Pause();
+
+        // establecemos el mensaje de pausa
+        txtMessage.text = "PAUSED\nPRESS <P> TO RESUME";
+
+        // pausamos el juego
+        Time.timeScale = 0;
+    }
+
+    private void ResumeGame()
+    {
+        paused = false;
+
+        // reanudamos la música de fondo
+        Camera.main.GetComponent<AudioSource>().UnPause();
+
+        // eliminamos el mensaje de pausa
+        txtMessage.text = "";
+
+        // reanudamos el juego
+        Time.timeScale = 1;
+    }
+
+    
 }

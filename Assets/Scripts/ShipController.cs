@@ -19,12 +19,15 @@ public class ShipController : MonoBehaviour
     Vector2 direction;
     bool active;
     Vector3 posicionInicial;
+    GameManager game;
 
     void Start()
     {
         posicionInicial = transform.position;
 
         rb = GetComponent<Rigidbody2D>();    
+
+        game = GameManager.GetInstance();
 
         StartCoroutine(StarPlayer());
     }
@@ -33,7 +36,7 @@ public class ShipController : MonoBehaviour
     {
         // if (active && Input.GetKeyDown(KeyCode.Space))
         // Fire1 es el botón izquierdo del ratón, Left CTRL y Joystick Button 0
-        if (active && Input.GetButtonDown("Fire1")) 
+        if (active && !game.IsPaused() && Input.GetButtonDown("Fire1")) 
         {
             // obtenemos la posición de la nave
             Vector3 position = transform.position;
