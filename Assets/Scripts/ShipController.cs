@@ -75,6 +75,14 @@ public class ShipController : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Enemy")
+        {
+            DestroyShip();
+        }
+    }
+
     void DestroyShip()
     {
         active = false;

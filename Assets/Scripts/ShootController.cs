@@ -21,10 +21,17 @@ public class ShootController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // instanciar la explosión
-        Instantiate(hitExplosion, transform.position, Quaternion.identity);
+        // destruir el disparo
+        DestroyHit();
+    }
 
+    void DestroyHit()
+    {
+        // instanciar la animación de la explosión
+        Instantiate(hitExplosion, transform.position, Quaternion.identity);
+        
         // destruir el disparo
         Destroy(gameObject);
     }
+
 }
