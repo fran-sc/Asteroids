@@ -4,7 +4,7 @@
 
 #### Project: Asteroids
 
-`[Unity ver.: 6.2.6f2]`
+`[Unity ver.: 6.2.8f2]`
 
 <center>
 

@@ -24,7 +24,7 @@ public class ScrollBackground : MonoBehaviour
 
     void Start()
     {
-        // Calcular y cachear la altura del sprite para usarla en el reciclaje.
+        // Calcular y cachear la altura del sprite para usarla en el reposicionado.
         // bounds.size.y proporciona la altura en unidades del mundo.
         height = GetComponent<SpriteRenderer>().bounds.size.y;        
     }
