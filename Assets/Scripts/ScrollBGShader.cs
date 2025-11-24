@@ -37,6 +37,7 @@ public class ScrollBGShader : MonoBehaviour
         // Aplicar el offset acumulativo al material.
         // Esto crea el efecto de scroll sin mover el GameObject.
         // Unity maneja automáticamente el wrapping cuando el offset supera 1.0.
+        // La imagen de textura debe estar configurada para repetir (Wrap Mode: Repeat).
         render.material.mainTextureOffset += offset;
     }
 }
